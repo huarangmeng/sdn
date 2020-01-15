@@ -10,8 +10,7 @@ class OdlUtil:
 		http.add_credentials(username, password)
 		headers = {'Accept': 'application/json'}
 		flow_name = 'flow_' + str(int(time.time()*1000))
-		#s2流表
-		#在检测h2发包的时候s2的1口流量空闲时发的流表
+		
 		h2s2body1 ='{"flow": [{"id": "0","match": {"ethernet-match":'\
                		'{"ethernet-type": {"type": "2048"}},'\
 					'"ipv4-source":"10.0.0.2/32","ipv4-destination": "10.0.0.1/32"},'\
@@ -19,7 +18,7 @@ class OdlUtil:
             		'"apply-actions": {"action": [{"output-action": {'\
                 	'"output-node-connector": "1"},"order": "0"}]}}]},'\
             		'"priority": "101","cookie": "1","table_id": "0"}]}'
-		#在检测h3发包的时候s2的1口流量空闲时发的流表
+		
 		h3s2body1 ='{"flow": [{"id": "1","match": {"ethernet-match":'\
                		'{"ethernet-type": {"type": "2048"}},'\
 					'"ipv4-source":"10.0.0.3/32","ipv4-destination": "10.0.0.1/32"},'\
@@ -34,7 +33,7 @@ class OdlUtil:
                 	'"apply-actions": {"action": [{"output-action": {'\
                 	'"output-node-connector": "1"},"order": "0"}]}}]},'\
             		'"priority": "100","cookie": "1","table_id": "0"}]}'
-		#在检测h3发包的时候s2的1口流量满载时发的流表	
+		
 		h3s2body2 ='{"flow": [{"id": "2","match": {"ethernet-match":'\
                		'{"ethernet-type": {"type": "2048"}},'\
 					'"ipv4-source":"10.0.0.3/32","ipv4-destination": "10.0.0.1/32"},'\
@@ -49,7 +48,7 @@ class OdlUtil:
                 	'"apply-actions": {"action": [{"output-action": {'\
                 	'"output-node-connector": "2"},"order": "0"}]}}]},'\
             		'"priority": "100","cookie": "1","table_id": "0"}]}'
-		#s3流表
+		
 		s3_1='{"flow": [{"id": "0","match": {"ethernet-match":'\
             '{"ethernet-type": {"type": "2048"}},'\
 			'"ipv4-source":"10.0.0.3/32","ipv4-destination": "10.0.0.1/32"},'\
@@ -57,7 +56,7 @@ class OdlUtil:
             '"apply-actions": {"action": [{"output-action": {'\
             '"output-node-connector": "1"},"order": "0"}]}}]},'\
             '"priority": "101","cookie": "1","table_id": "0"}]}'
-		#s1流表
+	
 		s1_2To1='{"flow": [{"id": "0","match": {"ethernet-match":'\
             	'{"ethernet-type": {"type": "2048"}},'\
 				'"ipv4-source":"10.0.0.2/32","ipv4-destination": "10.0.0.1/32"},'\
@@ -74,8 +73,8 @@ class OdlUtil:
             	'"priority": "101","cookie": "1","table_id": "0"}]}'
 		headers = {'Content-type': 'application/json'}
 		num=0
-		#下发流表，中间的地址可以从ODL控制器页面获得
-		#先把s1和s3的流表都下了
+	
+		#下发s1和s3的流表
 		response, content = http.request(uri='http://127.0.0.1:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/flow-node-inventory:table/0/flow/0', body=s1_2To1, method='PUT',headers=headers)	
 		response, content = http.request(uri='http://127.0.0.1:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:1/flow-node-inventory:table/0/flow/1', body=s1_3To1, method='PUT',headers=headers)
 		response, content = http.request(uri='http://127.0.0.1:8181/restconf/config/opendaylight-inventory:nodes/node/openflow:3/flow-node-inventory:table/0/flow/0', body=s3_1, method='PUT',headers=headers)
